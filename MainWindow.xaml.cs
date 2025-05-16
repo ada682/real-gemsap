@@ -34,7 +34,6 @@ namespace RealsonnetApp
             lightTheme.Source = new Uri("Themes/LightTheme.xaml", UriKind.Relative);
             Application.Current.Resources.MergedDictionaries.Add(lightTheme);
     
-            // Kode inisialisasi lainnya yang sudah ada
             ChatList.ItemsSource = chatMessages;
 
             chatMessages.Add(new ChatMessage
@@ -459,10 +458,8 @@ namespace RealsonnetApp
             var app = (App)Application.Current;
             isDark = !isDark;
     
-            // Hapus semua resource yang ada
             Application.Current.Resources.MergedDictionaries.Clear();
     
-            // Load theme yang baru
             var newTheme = new ResourceDictionary();
             newTheme.Source = isDark 
                 ? new Uri("Themes/DarkTheme.xaml", UriKind.Relative)
@@ -470,7 +467,7 @@ namespace RealsonnetApp
     
             Application.Current.Resources.MergedDictionaries.Add(newTheme);
     
-            // Update tombol theme
+            // tombol theme
             var themeButton = sender as Button;
             themeButton.Content = isDark ? "🌙" : "☀️";
         }
@@ -492,6 +489,6 @@ namespace RealsonnetApp
         public string Message { get; set; } = string.Empty;
         public bool IsUser { get; set; }
         public bool HasImage { get; set; }
-        public byte[][]? ImageBytes { get; set; } // Make nullable
+        public byte[][]? ImageBytes { get; set; } 
     }
 }
