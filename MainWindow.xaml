@@ -1,0 +1,138 @@
+<Window x:Class="RealsonnetApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealsonnetApp"
+        mc:Ignorable="d"
+        Title="Realsonnet AI Chat" Height="600" Width="420"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Border CornerRadius="20"
+            Background="{DynamicResource BackgroundColor}"
+            Margin="10">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <DockPanel Grid.Row="0" LastChildFill="False">
+                <TextBlock Text="🤖 Realsonnet" FontSize="16"
+                           Foreground="{DynamicResource TextColor}"
+                           VerticalAlignment="Center"/>
+                <Button Content="🗕" Width="30" Height="30"
+                        Click="Minimize_Click"
+                        Style="{StaticResource RoundedButtonStyle}"
+                        DockPanel.Dock="Right"/>
+                <Button Content="🌗" Width="30" Height="30"
+                        Click="ToggleTheme_Click"
+                        Style="{StaticResource RoundedButtonStyle}"
+                        DockPanel.Dock="Right"/>
+                <Button Content="X" Width="30" Height="30"
+                        Click="Close_Click"
+                        Style="{StaticResource RoundedButtonStyle}"
+                        DockPanel.Dock="Right"/>
+            </DockPanel>
+
+            <!-- Chat Area -->
+            <Grid Grid.Row="1">
+                <!-- Welcome Text -->
+                <TextBlock x:Name="WelcomeText"
+                           Text="💬 Apa yang bisa kubantu hari ini?"
+                           Foreground="{DynamicResource TextColor}"
+                           FontSize="14"
+                           Margin="10"
+                           TextOptions.TextFormattingMode="Display"
+                           TextOptions.TextRenderingMode="ClearType"
+                           FontFamily="Segoe UI Emoji, Segoe UI, Arial"
+                           Visibility="Visible"/>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="400">
+                    <ItemsControl x:Name="ChatList">
+                        <ItemsControl.ItemTemplateSelector>
+                            <local:ChatTemplateSelector>
+                                <local:ChatTemplateSelector.UserTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Right" Margin="10">
+                                            <Border Background="{DynamicResource BubbleColorUser}" CornerRadius="10" Padding="10">
+                                                <StackPanel>
+                                                    <ItemsControl ItemsSource="{Binding ImageBytes}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Image Source="{Binding Converter={StaticResource BytesToImageConverter}}" 
+                                                                       MaxWidth="300" MaxHeight="200"
+                                                                       Margin="0,0,0,5"/>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                    <TextBox Text="{Binding Message}" 
+                                                             Style="{StaticResource ChatBubbleStyle}"
+                                                             Foreground="White"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </local:ChatTemplateSelector.UserTemplate>
+                                <local:ChatTemplateSelector.BotTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Left" Margin="10">
+                                            <Border Background="{DynamicResource BubbleColorBot}" CornerRadius="10" Padding="10">
+                                                <TextBox Text="{Binding Message}" 
+                                                         Style="{StaticResource ChatBubbleStyle}"
+                                                         Foreground="{DynamicResource TextColor}"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </local:ChatTemplateSelector.BotTemplate>
+                            </local:ChatTemplateSelector>
+                        </ItemsControl.ItemTemplateSelector>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Input Area -->
+            <StackPanel Grid.Row="2" Margin="0,10">
+                <!-- Image Preview Area -->
+                <ScrollViewer x:Name="ImagePreviewScroll" 
+                              Height="80" 
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Hidden"
+                              Visibility="Collapsed">
+                    <StackPanel x:Name="ImagePreviewPanel" Orientation="Horizontal"/>
+                </ScrollViewer>
+                
+                <!-- Text Input and Buttons -->
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="ChatInput" 
+                             Width="270" 
+                             Height="35"
+                             VerticalContentAlignment="Center"
+                             FontSize="14"
+                             Text="Ketik pesan..."
+                             TextOptions.TextFormattingMode="Display"
+                             TextOptions.TextRenderingMode="ClearType"
+                             FontFamily="Segoe UI Emoji, Segoe UI, Arial"
+                             Foreground="{DynamicResource InputForeground}"
+                             Background="{DynamicResource InputBackground}"
+                             CaretBrush="{DynamicResource CaretBrush}"
+                             GotFocus="ChatInput_GotFocus"
+                             LostFocus="ChatInput_LostFocus"
+                             KeyDown="ChatInput_KeyDown"/>
+                    <Button Content="📎" Width="35" Height="35"
+                            Click="UploadImage_Click"
+                            Style="{StaticResource RoundedButtonStyle}"/>
+                    <Button Content="➤" Width="35" Height="35"
+                            Click="SendButton_Click"
+                            Style="{StaticResource RoundedButtonStyle}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
