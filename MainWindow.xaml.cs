@@ -20,7 +20,7 @@ namespace RealsonnetApp
 {
     public partial class MainWindow : Window
     {
-        private string apiKey = "AIzaSyA78fkViAeVX2xUtJ3QOLvYs_lw4RCjJy8";
+        private string apiKey = "YOUR_GEMINI_APIKEY";
         private List<byte[]> imageBytesList = new();
         private ObservableCollection<ChatMessage> chatMessages = new();
         private bool isDark = false;
